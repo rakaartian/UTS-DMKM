@@ -1,0 +1,76 @@
+---
+title: "UTS DMKM"
+author: "221810547_RakaArtianP"
+date: "3/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Install Packages
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(e1071)
+library(caret)
+```
+
+mengambil data
+```{r}
+data <- read.csv("data.txt")
+head(data)
+str(data)
+```
+
+mengatasi NA
+```{r}
+sum(is.na(data))
+data <- na.omit(data)
+```
+
+mengubah type data yang sesuai
+```{r}
+data$Class <- as.factor(data$Class)
+data$Age <- as.numeric(data$Age)
+data$Sex <- as.factor(data$Sex)
+data$Steroid <- as.factor(data$Steroid)
+data$Antivirals <- as.factor(data$Antivirals)
+data$Fatigue <- as.factor(data$Fatigue)
+data$Malaise <- as.factor(data$Malaise)
+data$Anorexia <- as.factor(data$Anorexia)
+data$LiverBig <- as.factor(data$LiverBig)
+data$LiverFirm <- as.factor(data$LiverFirm)
+data$SpleenPalpable <- as.factor(data$SpleenPalpable)
+data$Spiders <- as.factor(data$Spiders)
+data$Ascites <- as.factor(data$Ascites)
+data$Varices <- as.factor(data$Varices)
+data$Bilirubin <- as.numeric(data$Bilirubin)
+data$AlkPhosphate <- as.numeric(data$AlkPhosphate)
+data$Sgot <- as.numeric(data$Sgot)
+data$Albumin <- as.numeric(data$Albumin)
+data$Protime <- as.numeric(data$Protime)
+data$Histologi <- as.factor(data$Histologi)
+str(data)
+```
+
+membuat model SVM
+```{r}
+modelSVM <- svm(Histologi~., data=data)
+summary(modelSVM)
+```
+
+Membuat Prediksi dari model SVM yang telah dibuat
+```{r}
+pred <- predict(modelSVM, data)
+confusionMatrix(table(Predicted = pred, Actual=data$Histologi))
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
